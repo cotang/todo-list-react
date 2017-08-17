@@ -2,7 +2,7 @@
   "name": "to-do",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://cotang.github.io/todo-list-react",
+  "homepage": ".",
   "dependencies": {
     "gh-pages": "^1.0.0",
     "react": "^15.6.1",
