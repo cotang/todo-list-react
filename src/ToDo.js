@@ -11,16 +11,17 @@ class ToDo extends Component {
   addToList(){
     var input = document.querySelector('#new-action');
     this.setState({
-      list: [...this.state.list, {'title':input.value, 'fulfilled':false}]
+      list: [...this.state.list, {'title':input.value, 'completed':false}]
     })
     input.value='';
   }
-  fulfillAction(index){
+  completeAction(index){
     var newList = this.state.list.slice();
-    newList[index].fulfilled = true;
+    newList[index].completed = !(this.state.list[index].completed);
     this.setState({
       list: newList
     })
+    console.log(this.state.list);
   }
   deleteAction(index){
     var newList = this.state.list.slice();
@@ -40,13 +41,9 @@ class ToDo extends Component {
         <ol className="to-do__list" id="to-do__list">
           {this.state.list.map((item, index) =>
             <li className="to-do__item" key={index}>
-              {(item.fulfilled) ? (
-                <p className="fulfilled">{item.title}</p>
-              ) : (
-                <p>{item.title}</p>
-              )}
+              <p className={item.completed ? 'completed' : ''} >{item.title}</p>
               <div>
-                <button onClick={this.fulfillAction.bind(this, index)}><span className="color green">&#10004;</span>Fulfill action</button>
+                <button onClick={this.completeAction.bind(this, index)}><span className="color green">&#10004;</span>{item.completed ? 'Uncomplete' : 'Complete'} action</button>
                 <button onClick={this.deleteAction.bind(this, index)}><span className="color red">&#10008;</span>Delete action</button>
               </div>
             </li>
