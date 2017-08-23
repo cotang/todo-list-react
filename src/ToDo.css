@@ -5,7 +5,7 @@
   padding: 10px;
 }
 
-.completed{
+.to-do__item--completed p{
   text-decoration: line-through;
   color: rgba(0,0,0,0.5);
 }
