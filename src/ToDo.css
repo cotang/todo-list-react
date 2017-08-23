@@ -18,3 +18,47 @@
 .green{
   color: green;
 }
+
+.filters{
+  margin: 10px -5px;
+}
+.filters .btn{
+  background-color: transparent;
+  padding: 5px;
+  color: pink;
+  border: 2px solid pink;
+  border-radius: 3px;
+  margin: 5px;
+  display: inline-block;
+}
+.filters .btn--checked{
+  color: crimson;
+  border-color: crimson;
+  /*background-color: rgba(220, 20, 60, 0.2);*/
+}
+
+
+.sorting{
+  margin: 10px -5px;
+}
+.sorting .btn{
+  background-color: transparent;
+  padding: 5px;
+  color: cadetblue;
+  border: 2px solid cadetblue;
+  border-radius: 3px;
+  margin: 5px;
+  display: inline-block;
+}
+.sorting .btn--checked{
+  color: forestgreen;
+  border-color: forestgreen;
+  /*background-color: rgba(34, 139, 34, 0.2);*/
+}
+
+.btn:hover{
+  cursor: pointer;
+}
+.btn:focus{
+  outline: none;
+}

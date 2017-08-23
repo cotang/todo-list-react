@@ -39,24 +39,114 @@ class InputGroup extends React.Component {
 }
 
 
-
 class FilterGroup extends React.Component {
-  handleFilter(str){
+  constructor(){
+    super();
+    this.state = {
+      filters: [
+        {'title': 'All actions', 'filter': '', checked: true},
+        {'title': 'Active actions', 'filter': 'active', checked: false},
+        {'title': 'Completed actions', 'filter': 'completed', checked: false},
+      ],
+    }
+  }
+
+  handleFilter(str, index){
     this.props.onChangeFilter(str);
+
+    var newFilters = this.state.filters.slice();
+    newFilters.forEach(function(item) {
+      item.checked = false;
+    });
+    newFilters[index].checked = true;
+    this.setState({
+      filters: newFilters
+    })
   }
 
   render() {
     return (
       <div className="filters">
-        <button onClick={this.handleFilter.bind(this, '')}>All actions</button>
-        <button onClick={this.handleFilter.bind(this, 'active')}>Active actions</button>
-        <button onClick={this.handleFilter.bind(this, 'completed')}>Completed actions</button>
+        {this.state.filters.map((item, index) =>
+          <button className={item.checked ? "btn btn--checked" : "btn"} onClick={this.handleFilter.bind(this, item.filter, index)} key={index}>
+            {item.title}
+          </button>
+        )}
       </div>
     );
   }
 }
 
 
+function compareDateAsc(a, b) {
+  return a.num - b.num;
+}
+function compareDateDesc(a, b) {
+  return b.num - a.num;
+}
+function compareTitleAsc(a, b) {
+  if (a.title.toLowerCase() > b.title.toLowerCase())
+    return 1;
+  if (a.title.toLowerCase() < b.title.toLowerCase())
+    return -1;
+  else
+    return 0;
+}
+function compareTitleDesc(a, b) {
+  if (a.title.toLowerCase() > b.title.toLowerCase())
+    return -1;
+  if (a.title.toLowerCase() < b.title.toLowerCase())
+    return 1;
+  else
+    return 0;
+}
+function compareActive(a, b) {
+  return a.completed - b.completed;
+}
+function compareCompleted(a, b) {
+  return b.completed - a.completed;
+}
+
+class SortGroup extends React.Component {
+  constructor(){
+    super();
+    this.state = {
+      sortings: [
+        {'title': 'Date asc', 'function': compareDateAsc, checked: true},
+        {'title': 'Date desc', 'function': compareDateDesc, checked: false},
+        {'title': 'Title asc', 'function': compareTitleAsc, checked: false},
+        {'title': 'Title desc', 'function': compareTitleDesc, checked: false}, 
+        {'title': 'Active first', 'function': compareActive, checked: false},
+        {'title': 'Completed first', 'function': compareCompleted, checked: false}, 
+      ],
+    }
+  }
+
+  handleSorting(fn, index){
+    this.props.onChangeSorting(fn);
+    
+    var newSortings = this.state.sortings.slice();
+    newSortings.forEach(function(item) {
+      item.checked = false;
+    });
+    newSortings[index].checked = true;
+    this.setState({
+      sortings: newSortings
+    })
+  }
+
+  render() {
+    return (
+      <div className="sorting">
+        {this.state.sortings.map((item, index) =>
+          <button className={item.checked ? "btn btn--checked" : "btn"} onClick={this.handleSorting.bind(this, item.function, index)} key={index}>
+            {item.title}
+          </button>
+        )}
+      </div>
+    );
+  }
+}
 
 
 class ToDo extends Component {
@@ -68,6 +158,7 @@ class ToDo extends Component {
     }
     this.addAction = this.addAction.bind(this);
     this.changeFilter = this.changeFilter.bind(this);
+    this.useSorting = this.useSorting.bind(this);
   }
 
   addAction(value) {
@@ -75,13 +166,13 @@ class ToDo extends Component {
       return;
     }
     this.setState({      
-      list: [...this.state.list, {'title':value, 'completed':false}],
+      list: [...this.state.list, {'title':value, 'num': Date.now(), 'completed':false}],
     })
   }
 
   completeAction(index){
     var newList = this.state.list.slice();
-    newList[index].completed = !(this.state.list[index].completed);
+    newList[index].completed = !(newList[index].completed);
     this.setState({
       list: newList
     })
@@ -97,6 +188,14 @@ class ToDo extends Component {
   changeFilter(str){
     this.setState({
       filter: str
+    })
+  }
+
+  useSorting(fn){
+    var newList = this.state.list.slice();
+    newList.sort(fn);
+    this.setState({
+      list: newList
     })
   }
 
@@ -127,6 +226,8 @@ class ToDo extends Component {
         </ol>
 
         <FilterGroup onChangeFilter={this.changeFilter} />
+
+        <SortGroup onChangeSorting={this.useSorting} />
 
       </div>
     );
