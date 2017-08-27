@@ -62,3 +62,19 @@
 .btn:focus{
   outline: none;
 }
+
+.input-group input{
+  padding: 5px;
+  font-size: 1.2em;
+  width: 250px;
+}
+.input-group button{
+  padding: 5px;
+  font-size: 1.2em;
+  background-color: transparent;
+  margin-left: 5px;
+  color: blue;
+  border: 2px solid blue;
+  border-radius: 3px;
+  box-sizing: border-box;
+}

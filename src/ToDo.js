@@ -25,7 +25,7 @@ class InputGroup extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="input-group">
         <input 
           type="text" 
           placeholder="Write down the new action"
@@ -166,20 +166,22 @@ class ToDo extends Component {
       return;
     }
     this.setState({      
-      list: [...this.state.list, {'title':value, 'num': Date.now(), 'completed':false}],
+      list: [...this.state.list, {'title':value, 'key': Date.now(), 'completed':false}],
     })
   }
 
-  completeAction(index){
+  completeAction(index, item){
     var newList = this.state.list.slice();
-    newList[index].completed = !(newList[index].completed);
+    var key = newList.indexOf(item);
+    newList[key].completed = !(newList[key].completed);
     this.setState({
       list: newList
     })
   }
-  deleteAction(index){
+  deleteAction(index, item){
     var newList = this.state.list.slice();
-    newList.splice(index, 1);
+    var key = newList.indexOf(item);
+    newList.splice(key, 1);
     this.setState({
       list: newList
     })
@@ -218,8 +220,8 @@ class ToDo extends Component {
             <li className={item.completed ? "to-do__item to-do__item--completed" : "to-do__item"} key={index}>
               <p className="to-do__text" >{item.title}</p>
               <div>
-                <button onClick={this.completeAction.bind(this, index)}><span className="color green">&#10004;</span>{item.completed ? 'Uncomplete' : 'Complete'} action</button>
-                <button onClick={this.deleteAction.bind(this, index)}><span className="color red">&#10008;</span>Delete action</button>
+                <button onClick={this.completeAction.bind(this, index, item)}><span className="color green">&#10004;</span>{item.completed ? 'Uncomplete' : 'Complete'} action</button>
+                <button onClick={this.deleteAction.bind(this, index, item)}><span className="color red">&#10008;</span>Delete action</button>
               </div>
             </li>
           )}
